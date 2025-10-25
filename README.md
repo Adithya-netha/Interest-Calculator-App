@@ -29,7 +29,7 @@ The total period is then broken down into:
 
 ## 📸 Screenshots
 
-![App screenshot](https://github.com/Adithya-netha/Interest-Calculator-App/blob/bed963f0269f0505f10bf6fbf4e35bba6b446bdb/app%20screenshot1.jpeg)?raw=true "screenshot")
+![App screenshot](https://github.com/Adithya-netha/Interest-Calculator-App/blob/bed963f0269f0505f10bf6fbf4e35bba6b446bdb/app%20screenshot1.jpeg")
 
 ## 🚀 Getting Started
 
