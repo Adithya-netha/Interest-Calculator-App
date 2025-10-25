@@ -28,8 +28,8 @@ The total period is then broken down into:
 - Remaining days
 
 ## 📸 Screenshots
-
-![App screenshot](https://github.com/Adithya-netha/Interest-Calculator-App/blob/bed963f0269f0505f10bf6fbf4e35bba6b446bdb/app%20screenshot1.jpeg")
+![app screenshot2](https://github.com/user-attachments/assets/c3295216-2633-4eda-8016-a7f3ab8516a0)
+![app screenshot1](https://github.com/user-attachments/assets/fe92258d-dfe7-4221-902a-24494b289a69)
 
 ## 🚀 Getting Started
 
