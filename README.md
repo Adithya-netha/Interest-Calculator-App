@@ -31,7 +31,7 @@ The total period is then broken down into:
 
 <!-- Add your app screenshots here -->
 ```
-![App screenshot](/relative/path/to/img.jpg?raw=true "screenshot")
+![App screenshot](https://github.com/Adithya-netha/Interest-Calculator-App/blob/9ba9a72525ee8a87d8217183fa5473f3f9569407/Screenshot_1761393847.png?raw=true "screenshot")
 
 ```
 
