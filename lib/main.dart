@@ -2,73 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// Reusable compiled regexes to avoid recreating them during formatting.
-final RegExp _digitRE = RegExp(r'\d');
-final RegExp _nonDigitRE = RegExp(r'[^0-9]');
-
-// Reuse formatter instances to avoid allocating them on every build.
-final DateTextInputFormatter dateTextInputFormatter = DateTextInputFormatter();
-
-class DateTextInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    // Strip non-digits using precompiled regex
-    final digitsOnly = newValue.text.replaceAll(_nonDigitRE, '');
-    final limited = digitsOnly.length <= 8
-        ? digitsOnly
-        : digitsOnly.substring(0, 8);
-
-    // Build formatted with slashes after 2 and 4 digits
-    final buffer = StringBuffer();
-    for (int i = 0; i < limited.length; i++) {
-      buffer.write(limited[i]);
-      if (i == 1 || i == 3) buffer.write('/');
-    }
-    final formatted = buffer.toString();
-
-    // Calculate new caret position by mapping digit count
-    int selectionIndex = newValue.selection.end;
-    int digitsBefore = 0;
-    for (int i = 0; i < selectionIndex && i < newValue.text.length; i++) {
-      if (_digitRE.hasMatch(newValue.text[i])) digitsBefore++;
-    }
-
-    // Also compute digits before in old value to detect insertion vs deletion
-    int oldSelectionIndex = oldValue.selection.end;
-    int digitsBeforeOld = 0;
-    for (int i = 0; i < oldSelectionIndex && i < oldValue.text.length; i++) {
-      if (_digitRE.hasMatch(oldValue.text[i])) digitsBeforeOld++;
-    }
-
-    int caret = 0;
-    int digitsSeen = 0;
-    while (caret < formatted.length && digitsSeen < digitsBefore) {
-      if (_digitRE.hasMatch(formatted[caret])) digitsSeen++;
-      caret++;
-    }
-
-    // If user just inserted a digit (digitsBefore > digitsBeforeOld) and
-    // the next char at caret is a slash, advance caret to be after the slash.
-    if (digitsBefore > digitsBeforeOld &&
-        caret < formatted.length &&
-        formatted[caret] == '/') {
-      caret++;
-    }
-
-    return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: caret),
-    );
-  }
-}
-
-void main() {
-  runApp(const InterestApp());
-}
-
 class InterestApp extends StatelessWidget {
   const InterestApp({super.key});
   @override
@@ -101,8 +34,6 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
   final _principalController = TextEditingController();
   final _interestController = TextEditingController();
 
-  // (formatting handled by input formatter)
-
   double? _resultInterest;
   // totalDays removed; storing breakdown in _years/_months/_days
   int? _years;
@@ -124,8 +55,6 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
     _scaleAnim = Tween<double>(begin: 0.98, end: 1.0).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
     );
-
-    // use input formatters on the TextFields for auto-slash formatting
   }
 
   @override
@@ -137,10 +66,6 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
     _animController.dispose();
     super.dispose();
   }
-
-  // Date auto-formatting is handled by the top-level DateTextInputFormatter
-
-  // no-op: slash counting removed (formatter handles positions)
 
   // parse dd/mm/yyyy with simple checks
   List<int>? _parseDMY(String s) {
@@ -205,11 +130,11 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
         fromYear = fromParts[2];
     final toDay = toParts[0], toMonth = toParts[1], toYear = toParts[2];
 
-    final dayDiff = (fromDay - toDay).abs();
-    final monthDiff = (fromMonth - toMonth).abs();
-    final yearDiff = (fromYear - toYear).abs();
+    final dayDiff = (fromDay - toDay);
+    final monthDiff = (fromMonth - toMonth);
+    final yearDiff = (fromYear - toYear);
 
-    final totalDays = dayDiff + (monthDiff * 30) + (yearDiff * 360);
+    final totalDays = (dayDiff + (monthDiff * 31) + (yearDiff * 360)).abs();
 
     // Decompose totalDays into years, months, days using 360/30 rule
     int remaining = totalDays;
@@ -368,18 +293,18 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            // Two date fields with "TO" between them
                             Row(
                               children: [
                                 Expanded(
                                   child: _inputField(
                                     hint: 'dd/mm/yyyy',
                                     controller: _fromController,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.text,
                                     inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(r'[\d/]'),
+                                      ),
                                       LengthLimitingTextInputFormatter(10),
-                                      dateTextInputFormatter,
                                     ],
                                   ),
                                 ),
@@ -409,11 +334,12 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
                                   child: _inputField(
                                     hint: 'dd/mm/yyyy',
                                     controller: _toController,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.text,
                                     inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly,
+                                      FilteringTextInputFormatter.allow(
+                                        RegExp(r'[\d/]'),
+                                      ),
                                       LengthLimitingTextInputFormatter(10),
-                                      dateTextInputFormatter,
                                     ],
                                   ),
                                 ),
@@ -726,4 +652,8 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
       ),
     );
   }
+}
+
+void main() {
+  runApp(const InterestApp());
 }
