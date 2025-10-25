@@ -16,17 +16,6 @@ A simple and elegant Flutter app to calculate interest between two dates with au
 - **Copy Results**: One-tap copy of calculated results to clipboard
 - **Responsive Design**: Clean, modern interface optimized for all screen sizes
 
-## 🎯 Calculation Method
-
-The app uses a simplified interest calculation:
-- **Total Days** = |day difference| + (|month difference| × 30) + (|year difference| × 360)
-- **Interest** = (Principal × Rate × (Total Days / 30)) / 100
-
-The total period is then broken down into:
-- Years (360 days per year)
-- Months (30 days per month)
-- Remaining days
-
 ## 📸 Screenshots
 ![app screenshot2](https://github.com/user-attachments/assets/c3295216-2633-4eda-8016-a7f3ab8516a0)
 ![app screenshot1](https://github.com/user-attachments/assets/fe92258d-dfe7-4221-902a-24494b289a69)
@@ -123,16 +112,6 @@ This app uses only Flutter's core packages:
 
 No external dependencies required!
 
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 ## 📝 Future Enhancements
 
 - [ ] Multiple interest calculation methods (simple, compound, daily compound)
@@ -151,7 +130,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Adithya**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
+- GitHub: [@Adithya-netha](https://github.com/Adithya-netha)
 
 ## 🙏 Acknowledgments
 
