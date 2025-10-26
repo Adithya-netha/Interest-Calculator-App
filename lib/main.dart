@@ -134,7 +134,7 @@ class _InterestCalculatorPageState extends State<InterestCalculatorPage>
     final monthDiff = (fromMonth - toMonth);
     final yearDiff = (fromYear - toYear);
 
-    final totalDays = (dayDiff + (monthDiff * 31) + (yearDiff * 360)).abs();
+    final totalDays = (dayDiff + (monthDiff * 30) + (yearDiff * 360)).abs();
 
     // Decompose totalDays into years, months, days using 360/30 rule
     int remaining = totalDays;
